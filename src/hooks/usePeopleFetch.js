@@ -1,5 +1,6 @@
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext, useCallback } from "react";
 import axios from "axios";
+import _ from "lodash";
 import AppContext from "../AppContext";
 
 export const usePeopleFetch = () => {
@@ -11,46 +12,98 @@ export const usePeopleFetch = () => {
     page,
     setPage,
     selectNat,
+    favorites,
     setSelectNat,
+    setFavorites,
   } = useContext(AppContext);
 
-  useEffect(() => {
-    if (selectNat.toString() == "") {
-      fetchUsers(page);
-    } else {
-      fetchUsersSelect(page);
+  // SCROLL LOAD MORE USER
+  const handleScroll = useCallback(
+    (e) => {
+      const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
+      if (scrollHeight - scrollTop === clientHeight) {
+        // Increase the page
+        setPage(page + 1);
+      }
+    },
+    [page]
+  );
+
+  // FUNCTION CHECKBOX FILTER
+  const onToggleSelectNat = useCallback(
+    (value) => {
+      let newArray = selectNat;
+      let index = selectNat.indexOf(value);
+      if (index === -1) {
+        newArray.push(value);
+      } else {
+        newArray.splice(index, 1);
+      }
+      setSelectNat([...newArray]);
+    },
+    [selectNat]
+  );
+
+  const isFavorited = (user) => {
+    const isExised = _.find(favorites, (favoritedUser) => {
+      return favoritedUser.login.uuid === user.login.uuid;
+    });
+    return isExised;
+  };
+  const onUserFavoriteToggle = useCallback(
+    (selectUser) => {
+      const isExised = _.find(favorites, (user) => {
+        return user.login.uuid === selectUser.login.uuid;
+      });
+
+      if (isExised) {
+        const newFavoritesList = _.reject(
+          favorites,
+          (favoritedUser) => favoritedUser.login.uuid === selectUser.login.uuid
+        );
+        setFavorites([...newFavoritesList]);
+      } else {
+        console.log(isExised, selectUser, favorites);
+        setFavorites([...favorites, selectUser]);
+      }
+    },
+    [favorites]
+  );
+
+  const fetchUsers = async (page, nats) => {
+    const { data } = await axios.get(
+      `https://randomuser.me/api/?results=5&page=${page}${
+        nats.length > 0 ? "?nat=" + nats.join(",") : ""
+      }`
+    );
+    if (data.results) {
+      return data.results;
     }
-  }, [page]);
+  };
+  useEffect(() => {
+    setUsers([]);
+    setPage(1);
 
-  // Fetch all data users
-  const fetchUsers = async (page) => {
-    const newUsers = [];
     setIsLoading(true);
-    const response = await axios.get(`https://randomuser.me/api/?results=${page}&page=1`);
-    setIsLoading(false);
-
-    // Add property clicked into array users
-    response.data.results &&
-      response.data.results.forEach((element) => {
-        newUsers.push({ ...element, clicked: false });
-      });
-
-    setUsers(newUsers);
-  };
-
-  const fetchUsersSelect = (page) => {
-    axios
-      .get(`https://randomuser.me/api/?nat=${selectNat.toString()}&&results=${page}`)
-      .then((res) => {
-        if (res && res.status === 200) {
-          setUsers(res.data.results);
-        }
+    fetchUsers(page, selectNat)
+      .then((data) => {
+        setUsers([...data]);
       })
-      .catch((error) => {
-        throw error;
+      .finally(() => {
+        setIsLoading(false);
       });
-  };
+  }, [selectNat]);
 
+  useEffect(() => {
+    setIsLoading(true);
+    fetchUsers(page, selectNat)
+      .then((data) => {
+        setUsers([...users, ...data]);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [page]);
   return {
     users,
     isLoading,
@@ -59,8 +112,11 @@ export const usePeopleFetch = () => {
     page,
     setPage,
     selectNat,
+    onUserFavoriteToggle,
+    onToggleSelectNat,
+    isFavorited,
     setSelectNat,
-    fetchUsersSelect,
-    fetchUsers,
+    favorites,
+    handleScroll,
   };
 };

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useLocalStorage from "use-local-storage";
 
 const AppContext = React.createContext();
 
@@ -6,10 +7,8 @@ const AppProvider = (props) => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectNat, setSelectNat] = useState([]);
-
-  // useState page to use load more user (default 10 users)
-  const [page, setPage] = useState(10);
-
+  const [page, setPage] = useState(1);
+  const [favorites, setFavorites] = useLocalStorage("favorites", []);
   return (
     <AppContext.Provider
       value={{
@@ -19,6 +18,8 @@ const AppProvider = (props) => {
         setIsLoading,
         page,
         setPage,
+        setFavorites,
+        favorites,
         selectNat,
         setSelectNat,
       }}
