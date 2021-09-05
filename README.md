@@ -1,4 +1,4 @@
-# 
+#
 
 Welcome to the Ppl Finder application.
 This app is a simple application which displays randomly generated user information in a list, using the `randomuser.me` API.
@@ -8,10 +8,10 @@ This app is a simple application which displays randomly generated user informat
 To get this app running locally all you need to do is:
 
 1. Make sure you have a [Github](https://github.com) account
-3. Clone your newly created repository
-4. In the created folder install the node modules `npm install`
-5. Run the app `npm start`
-6. Your local app should be available at `http://localhost:3000`
+2. Clone your newly created repository
+3. In the created folder install the node modules `npm install`
+4. Run the app `npm start`
+5. Your local app should be available at `http://localhost:3000`
 
 ## Your Tasks
 
@@ -24,7 +24,7 @@ Above the list, there are several disfunctional checkboxes, which should add cou
 
 1. Leaving them all unchecked should display all countries.
 2. Checking one of the checkboxes should only fetch users from that specific country.
-3. Checking several checkboxes should fetch users from all of the selected countries. 
+3. Checking several checkboxes should fetch users from all of the selected countries.
 
 #### Bonus:
 
@@ -57,7 +57,6 @@ Implement an Infinity Scroll functionality, which would fetch additional users a
 
 - All the code you'll change / add will be in the `/src` folder.
 - If you want to use `npm` modules for other parts, go for it - just make sure you know how they work under the hood.
-
 
 ## Submitting your project
 
