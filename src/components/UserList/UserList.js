@@ -11,22 +11,14 @@ const UserList = ({}) => {
   const {
     users,
     isLoading,
-    setUsers,
     onUserFavoriteToggle,
-    page,
-    setPage,
-    selectNat,
-    setSelectNat,
     isFavorited,
-    fetchUsersSelect,
     handleScroll,
     onToggleSelectNat,
   } = usePeopleFetch();
   const [hoveredUserId, setHoveredUserId] = useState();
-  const [checkHeart, setCheckHeart] = useState(false);
-  const [favorite, setFavorite] = useState([]);
-  const [arrayTemp, setArrayTemp] = useState();
-  const [nation] = useState([
+
+  const nation = [
     { value: "AU", label: "Brazil" },
     { value: "BR", label: "Australia" },
     { value: "CA", label: "Canada" },
@@ -44,7 +36,7 @@ const UserList = ({}) => {
     { value: "NZ", label: "New Zealand" },
     { value: "TR", label: "Turkey" },
     { value: "US", label: "United States" },
-  ]);
+  ];
 
   const handleMouseEnter = (index) => {
     setHoveredUserId(index);

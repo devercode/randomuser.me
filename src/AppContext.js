@@ -8,6 +8,8 @@ const AppProvider = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectNat, setSelectNat] = useState([]);
   const [page, setPage] = useState(1);
+
+  //Use Local storage to save favorites Users so when refresh the page it still be there
   const [favorites, setFavorites] = useLocalStorage("favorites", []);
   return (
     <AppContext.Provider

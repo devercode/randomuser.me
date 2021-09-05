@@ -50,26 +50,32 @@ export const usePeopleFetch = () => {
     });
     return isExised;
   };
+
   const onUserFavoriteToggle = useCallback(
     (selectUser) => {
+      // Check if the user have been already favorited
       const isExised = _.find(favorites, (user) => {
         return user.login.uuid === selectUser.login.uuid;
       });
 
       if (isExised) {
+        // Remove it
         const newFavoritesList = _.reject(
           favorites,
           (favoritedUser) => favoritedUser.login.uuid === selectUser.login.uuid
         );
         setFavorites([...newFavoritesList]);
       } else {
-        console.log(isExised, selectUser, favorites);
+        // Add to the favoriteList
         setFavorites([...favorites, selectUser]);
       }
     },
     [favorites]
   );
 
+  /**
+   * Fetch Users Data from API
+   */
   const fetchUsers = async (page, nats) => {
     const { data } = await axios.get(
       `https://randomuser.me/api/?results=5&page=${page}${
@@ -80,11 +86,15 @@ export const usePeopleFetch = () => {
       return data.results;
     }
   };
+
+  // Re-fetch after select new nations
   useEffect(() => {
+    //Reset
     setUsers([]);
     setPage(1);
 
     setIsLoading(true);
+
     fetchUsers(page, selectNat)
       .then((data) => {
         setUsers([...data]);
@@ -94,6 +104,7 @@ export const usePeopleFetch = () => {
       });
   }, [selectNat]);
 
+  //Handle Change when infinity scroll
   useEffect(() => {
     setIsLoading(true);
     fetchUsers(page, selectNat)
@@ -104,6 +115,7 @@ export const usePeopleFetch = () => {
         setIsLoading(false);
       });
   }, [page]);
+
   return {
     users,
     isLoading,
