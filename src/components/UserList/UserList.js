@@ -10,15 +10,22 @@ import { usePeopleFetch } from "../../hooks/usePeopleFetch";
 import { useLocalStorage } from "@rehooks/local-storage";
 
 const UserList = ({}) => {
-  const { users, isLoading, setUsers, page, setPage } = usePeopleFetch();
-
+  const {
+    users,
+    isLoading,
+    setUsers,
+    page,
+    setPage,
+    selectNat,
+    setSelectNat,
+    fetchUsersSelect,
+    fetchUsers,
+  } = usePeopleFetch();
   const [hoveredUserId, setHoveredUserId] = useState();
   const [checkHandleChange, setCheckHandleChange] = useState(false);
   const [checkHeart, setCheckHeart] = useState(false);
-  const [selectNat, setSelectNat] = useState([]);
   const [favorite, setFavorite] = useState([]);
   const [arrayTemp, setArrayTemp] = useState();
-  // const [newArray] = useLocalStorage("user", { name: "Anakin Skywalker" });
   const [nation, setNation] = useState([
     { value: "AU", label: "Brazil" },
     { value: "BR", label: "Australia" },
@@ -74,39 +81,12 @@ const UserList = ({}) => {
     setCheckHandleChange(!checkHandleChange);
   };
 
-  // CALL API FILTER NATIONAL
-  const getApiSelect = (page) => {
-    axios
-      .get(`https://randomuser.me/api/?nat=${selectNat.toString()}&&results=${page}`)
-      .then((res) => {
-        if (res && res.status === 200) {
-          setUsers(res.data.results);
-        }
-      })
-      .catch((error) => {
-        throw error;
-      });
-  };
-  //GET API ALL USERS
-  const getApiAll = (page) => {
-    axios
-      .get(`https://randomuser.me/api/?results=25&page=1`)
-      .then((res) => {
-        if (res && res.status === 200) {
-          setUsers(res.data.results);
-        }
-      })
-      .catch((error) => {
-        throw error;
-      });
-  };
-
   // SET CONDITION TO GET USERS FILTER
   useEffect(() => {
     if (selectNat.toString() !== "") {
-      getApiSelect(page);
+      fetchUsersSelect(page);
     } else {
-      getApiAll(page);
+      fetchUsers(page);
     }
   }, [checkHandleChange]);
 

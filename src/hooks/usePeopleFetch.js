@@ -3,11 +3,23 @@ import axios from "axios";
 import AppContext from "../AppContext";
 
 export const usePeopleFetch = () => {
-  const { users, setUsers, isLoading, setIsLoading, page, setPage } =
-    useContext(AppContext);
+  const {
+    users,
+    setUsers,
+    isLoading,
+    setIsLoading,
+    page,
+    setPage,
+    selectNat,
+    setSelectNat,
+  } = useContext(AppContext);
 
   useEffect(() => {
-    fetchUsers(page);
+    if (selectNat.toString() == "") {
+      fetchUsers(page);
+    } else {
+      fetchUsersSelect(page);
+    }
   }, [page]);
 
   // Fetch all data users
@@ -26,5 +38,29 @@ export const usePeopleFetch = () => {
     setUsers(newUsers);
   };
 
-  return { users, isLoading, fetchUsers, setUsers, page, setPage };
+  const fetchUsersSelect = (page) => {
+    axios
+      .get(`https://randomuser.me/api/?nat=${selectNat.toString()}&&results=${page}`)
+      .then((res) => {
+        if (res && res.status === 200) {
+          setUsers(res.data.results);
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
+  return {
+    users,
+    isLoading,
+    fetchUsers,
+    setUsers,
+    page,
+    setPage,
+    selectNat,
+    setSelectNat,
+    fetchUsersSelect,
+    fetchUsers,
+  };
 };
