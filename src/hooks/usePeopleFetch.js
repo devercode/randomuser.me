@@ -79,7 +79,7 @@ export const usePeopleFetch = () => {
   const fetchUsers = async (page, nats) => {
     const { data } = await axios.get(
       `https://randomuser.me/api/?results=5&page=${page}${
-        nats.length > 0 ? "&nat=" + nats.join(",") : ""
+        nats.length > 0 ? "?nat=" + nats.join(",") : ""
       }`
     );
     if (data.results) {

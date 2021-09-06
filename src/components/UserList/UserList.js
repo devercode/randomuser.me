@@ -47,7 +47,7 @@ const UserList = ({}) => {
   };
 
   return (
-    <Style.UserList>
+    <Style.UserList onScroll={handleScroll}>
       <Style.Filters>
         {/* SHOW OPTION SELECT NATION */}
         {nation.map((na, index) => (
