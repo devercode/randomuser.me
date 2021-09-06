@@ -29,6 +29,7 @@ export const UserInfo = styled.div`
   flex-direction: column;
   justify-content: center;
   max-height: 128px;
+  width: 250px;
   gap: 2px;
   overflow: hidden;
 `;
