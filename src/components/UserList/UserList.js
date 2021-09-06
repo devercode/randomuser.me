@@ -6,11 +6,21 @@ import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import * as Style from "./style";
 import { usePeopleFetch } from "../../hooks/usePeopleFetch";
+import InfiniteScroll from "react-infinite-scroll-component";
+
+const style = {
+  height: 30,
+  border: "1px solid green",
+  margin: 6,
+  padding: 8,
+};
 
 const UserList = ({}) => {
   const {
     users,
     isLoading,
+    setPage,
+    page,
     onUserFavoriteToggle,
     isFavorited,
     handleScroll,
@@ -47,7 +57,7 @@ const UserList = ({}) => {
   };
 
   return (
-    <Style.UserList onScroll={handleScroll}>
+    <Style.UserList>
       <Style.Filters>
         {/* SHOW OPTION SELECT NATION */}
         {nation.map((na, index) => (
@@ -59,41 +69,54 @@ const UserList = ({}) => {
           />
         ))}
       </Style.Filters>
-      <Style.List onScroll={handleScroll}>
-        {users &&
-          users.map((user, index) => {
-            return (
-              <Style.User
-                key={index}
-                onMouseEnter={() => handleMouseEnter(index)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <Style.UserPicture src={user.picture.large} alt="" />
-                <Style.UserInfo>
-                  <Text size="22px" bold>
-                    {user.name.title} {user.name.first} {user.name.last}
-                  </Text>
-                  <Text size="14px">{user.email}</Text>
-                  <Text size="14px">
-                    {user.location.street.number} {user.location.street.name}
-                  </Text>
-                  <Text size="14px">
-                    {user.location.city} {user.location.country}
-                  </Text>
-                </Style.UserInfo>
-                <Style.IconButtonWrapper isVisible={isFavorited(user)}>
-                  <IconButton onClick={() => onUserFavoriteToggle(user)}>
-                    <FavoriteIcon color="error" />
-                  </IconButton>
-                </Style.IconButtonWrapper>
-              </Style.User>
-            );
-          })}
-        {isLoading && (
-          <Style.SpinnerWrapper>
-            <Spinner color="primary" size="45px" thickness={6} variant="indeterminate" />
-          </Style.SpinnerWrapper>
-        )}
+
+      <Style.List>
+        <InfiniteScroll
+          dataLength={users.length}
+          next={() => setPage(page + 1)}
+          hasMore={true}
+          loader={<h4>Loading...</h4>}
+        >
+          {users &&
+            users.map((user, index) => {
+              return (
+                <Style.User
+                  key={index}
+                  onMouseEnter={() => handleMouseEnter(index)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <Style.UserPicture src={user.picture.large} alt="" />
+                  <Style.UserInfo>
+                    <Text size="22px" bold>
+                      {user.name.title} {user.name.first} {user.name.last}
+                    </Text>
+                    <Text size="14px">{user.email}</Text>
+                    <Text size="14px">
+                      {user.location.street.number} {user.location.street.name}
+                    </Text>
+                    <Text size="14px">
+                      {user.location.city} {user.location.country}
+                    </Text>
+                  </Style.UserInfo>
+                  <Style.IconButtonWrapper isVisible={isFavorited(user)}>
+                    <IconButton onClick={() => onUserFavoriteToggle(user)}>
+                      <FavoriteIcon color="error" />
+                    </IconButton>
+                  </Style.IconButtonWrapper>
+                </Style.User>
+              );
+            })}
+          {isLoading && (
+            <Style.SpinnerWrapper>
+              <Spinner
+                color="primary"
+                size="45px"
+                thickness={6}
+                variant="indeterminate"
+              />
+            </Style.SpinnerWrapper>
+          )}
+        </InfiniteScroll>
       </Style.List>
     </Style.UserList>
   );

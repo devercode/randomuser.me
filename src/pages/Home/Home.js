@@ -5,7 +5,7 @@ import { usePeopleFetch } from "../../hooks/usePeopleFetch";
 import * as Style from "./style";
 
 const Home = () => {
-  const { users, isLoading } = usePeopleFetch();
+  const { handleScroll } = usePeopleFetch();
 
   // component call in folder NavBar
   return (

@@ -5,6 +5,7 @@ export const UserList = styled.div`
   flex-direction: column;
   width: 70%;
   margin: 0 auto;
+  overflow-y: auto;
 `;
 
 export const List = styled.div`
@@ -12,9 +13,7 @@ export const List = styled.div`
   flex-direction: column;
   gap: 35px;
   width: 100%;
-  height: calc(100vh - 270px);
   margin-block-start: 30px;
-  overflow-y: auto;
   margin: 35px auto;
 `;
 
@@ -22,6 +21,7 @@ export const User = styled.div`
   display: flex;
   justify-content: center;
   gap: 16px;
+  margin-bottom: 25px;
 `;
 
 export const UserInfo = styled.div`
@@ -58,6 +58,7 @@ export const Filters = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   margin: 0 auto;
+  width: 70%;
   & > * {
     margin-inline-end: 8px;
   }
