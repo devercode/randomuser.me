@@ -75,7 +75,7 @@ const UserList = ({}) => {
           dataLength={users.length}
           next={() => setPage(page + 1)}
           hasMore={true}
-          loader={<h4>Loading...</h4>}
+          style={{ overflow: "hidden" }}
         >
           {users &&
             users.map((user, index) => {

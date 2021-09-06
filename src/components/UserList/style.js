@@ -5,7 +5,6 @@ export const UserList = styled.div`
   flex-direction: column;
   width: 70%;
   margin: 0 auto;
-  overflow-y: auto;
 `;
 
 export const List = styled.div`
