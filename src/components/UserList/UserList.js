@@ -70,11 +70,12 @@ const UserList = ({}) => {
         ))}
       </Style.Filters>
 
-      <Style.List>
+      <Style.List id="scrollableDiv" style={{ height: 700, overflow: "auto" }}>
         <InfiniteScroll
           dataLength={users.length}
           next={() => setPage(page + 1)}
           hasMore={true}
+          scrollableTarget="scrollableDiv"
           style={{ overflow: "hidden" }}
         >
           {users &&

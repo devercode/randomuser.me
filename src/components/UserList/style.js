@@ -11,7 +11,7 @@ export const List = styled.div`
   display: flex;
   flex-direction: column;
   gap: 35px;
-  width: 100%;
+  width: 65%;
   margin-block-start: 30px;
   margin: 35px auto;
 `;
